@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace FitnessApp.Infrastructure.Data
+namespace FitnessApp.FitnessApp.DAL.Data
 {
 	public class AppDbContext : DbContext
 	{

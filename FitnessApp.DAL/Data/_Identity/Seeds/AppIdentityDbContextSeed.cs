@@ -1,4 +1,4 @@
-﻿using Core.Entities.identity;
+﻿
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Data._Identity.Seeds
+namespace FitnessApp.DAL.Data._Identity.Seeds
 {
 	public class AppIdentityDbContextSeed
 	{

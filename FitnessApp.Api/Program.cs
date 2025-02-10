@@ -1,7 +1,7 @@
 
 
-using FitnessApp.Infrastructure.Data;
-using Infrastructure.Data._Identity;
+using FitnessApp.FitnessApp.DAL.Data;
+using FitnessApp.DAL.Data._Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace FitnessApp.Api
