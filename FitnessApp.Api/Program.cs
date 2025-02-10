@@ -1,4 +1,9 @@
 
+
+using FitnessApp.Infrastructure.Data;
+using Infrastructure.Data._Identity;
+using Microsoft.EntityFrameworkCore;
+
 namespace FitnessApp.Api
 {
     public class Program
@@ -12,8 +17,12 @@ namespace FitnessApp.Api
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
+			builder.Services.AddDbContext<AppDbContext>(options =>
+			options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            var app = builder.Build();
+			builder.Services.AddDbContext<StoreIdentityDbContext>(options =>
+	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+			var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
