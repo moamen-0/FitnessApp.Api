@@ -11,7 +11,7 @@ namespace FitnessApp.FitnessApp.DAL.Data
 		public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
 		{
 		}
-		public DbSet<Trainer> Trainers { get; set; } = null!;
+		
 		public DbSet<Workout> Workouts { get; set; } = null!;
 		public DbSet<WorkoutPlan> WorkoutPlans { get; set; } = null!;
 		public DbSet<AIFormAnalysis> AIFormAnalyses { get; set; } = null!;
