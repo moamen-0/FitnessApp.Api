@@ -9,7 +9,7 @@ namespace FitnessApp.DAL.Data._Identity.Config
 	{
 		public void Configure(EntityTypeBuilder<ApplicationUser> builder)
 		{
-			builder.Property(p => p.DisplayName).IsRequired();
+			builder.Property(p => p.FullName).IsRequired();
 
 
 			
