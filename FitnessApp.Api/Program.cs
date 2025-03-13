@@ -1,7 +1,7 @@
 
 
 using FitnessApp.FitnessApp.DAL.Data;
-using FitnessApp.DAL.Data._Identity;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace FitnessApp.Api
@@ -20,8 +20,7 @@ namespace FitnessApp.Api
 			builder.Services.AddDbContext<AppDbContext>(options =>
 			options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-			builder.Services.AddDbContext<StoreIdentityDbContext>(options =>
-	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+			
 			var app = builder.Build();
 
             // Configure the HTTP request pipeline.
