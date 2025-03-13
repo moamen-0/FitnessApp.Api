@@ -88,9 +88,7 @@ namespace FitnessApp.Api.Controllers
 
 			return Ok(new
 			{
-				token = new JwtSecurityTokenHandler().WriteToken(token),
-				expiration = token.ValidTo,
-				userId = user.Id,
+				
 				email = user.Email,
 				fullName = user.FullName
 			});
@@ -105,7 +103,8 @@ namespace FitnessApp.Api.Controllers
 			var newUser = new ApplicationUser
 			{
 				FullName = model.FullName,
-				Email = model.Email
+				Email = model.Email,
+				UserName = model.Email
 			};
 
 			var result = await _userManager.CreateAsync(newUser, model.Password);
@@ -119,7 +118,7 @@ namespace FitnessApp.Api.Controllers
 			return Ok(new
 			{
 				message = "User registered successfully",
-				userId = newUser.Id
+			
 			});
 		}
 

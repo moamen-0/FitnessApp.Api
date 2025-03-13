@@ -6,7 +6,7 @@ using FitnessApp.Core.Interfaces;
 using FitnessApp.Core.Interfaces.IService;
 using FitnessApp.DAL;
 using FitnessApp.DAL.Data;
-
+using FitnessApp.DAL.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +17,7 @@ namespace FitnessApp.Api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -56,8 +56,31 @@ namespace FitnessApp.Api
 
 			var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+			using (var scope = app.Services.CreateScope())
+			{
+				var services = scope.ServiceProvider;
+				try
+				{
+					var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+					// Create roles if they don't exist
+					if (!await roleManager.RoleExistsAsync(Roles.Admin))
+						await roleManager.CreateAsync(new IdentityRole(Roles.Admin));
+
+					if (!await roleManager.RoleExistsAsync(Roles.User))
+						await roleManager.CreateAsync(new IdentityRole(Roles.User));
+
+					// You can add more roles here if needed
+				}
+				catch (Exception ex)
+				{
+					var logger = services.GetRequiredService<ILogger<Program>>();
+					logger.LogError(ex, "An error occurred while creating roles.");
+				}
+			}
+
+			// Configure the HTTP request pipeline.
+			if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
             }
