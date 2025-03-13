@@ -10,10 +10,14 @@ namespace FitnessApp.Core.Entities
 		public string Gender { get; set; } = string.Empty;
 		public DateTime DateOfBirth { get; set; }
 		public string? ProfileImage { get; set; }
+		public int? Age { get; set; }
+		public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-		 
-		public ICollection<WorkoutPlan> WorkoutPlans { get; set; } = new List<WorkoutPlan>();
-		public ICollection<DietPlan> DietPlans { get; set; } = new List<DietPlan>();
-		public ICollection<InBodyAnalysis> InBodyAnalyses { get; set; } = new List<InBodyAnalysis>();
+
+		public virtual ICollection<InBodyResult> InBodyResults { get; set; }
+		public virtual ICollection<WorkoutPlan> WorkoutPlans { get; set; }
+		public virtual ICollection<CompletedWorkout> CompletedWorkouts { get; set; }
+		public virtual UserGoal UserGoal { get; set; }
+		public virtual ICollection<UserProgress> ProgressEntries { get; set; }
 	}
 }

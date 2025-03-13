@@ -10,11 +10,12 @@ namespace FitnessApp.Core.Entities
 	{
 		public int Id { get; set; }
 		public string UserId { get; set; }
-		public ApplicationUser User { get; set; } = null!;
-		public int WorkoutId { get; set; }
-		public Workout Workout { get; set; } = null!;
 		public DateTime Date { get; set; }
-		public int RepsCompleted { get; set; }
-		public int WeightLifted { get; set; } 
+		public string MetricType { get; set; }  // Weight, BodyFat, Strength, etc.
+		public decimal MetricValue { get; set; }
+		public string? Notes { get; set; }
+
+		// Navigation property
+		public virtual ApplicationUser User { get; set; }
 	}
 }
