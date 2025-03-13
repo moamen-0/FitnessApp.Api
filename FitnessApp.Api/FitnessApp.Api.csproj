@@ -33,8 +33,4 @@
     <ProjectReference Include="..\FitnessApp.DAL\FitnessApp.DAL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>

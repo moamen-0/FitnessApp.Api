@@ -19,5 +19,8 @@ namespace FitnessApp.Core.Entities
 		public virtual ICollection<CompletedWorkout> CompletedWorkouts { get; set; }
 		public virtual UserGoal UserGoal { get; set; }
 		public virtual ICollection<UserProgress> ProgressEntries { get; set; }
+
+		public string? ResetPasswordToken { get; set; }
+		public DateTime? ResetPasswordTokenExpiry { get; set; }
 	}
 }

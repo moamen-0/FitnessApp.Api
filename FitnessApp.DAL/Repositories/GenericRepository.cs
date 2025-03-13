@@ -1,5 +1,5 @@
-﻿using FitnessApp.Core.Interfaces;
-using FitnessApp.FitnessApp.DAL.Data;
+﻿using FitnessApp.Core.Interfaces.IRepository;
+using FitnessApp.DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

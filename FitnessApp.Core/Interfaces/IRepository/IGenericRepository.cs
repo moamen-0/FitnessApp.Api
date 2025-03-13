@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FitnessApp.Core.Interfaces
+namespace FitnessApp.Core.Interfaces.IRepository
 {
 	public interface IGenericRepository<T> where T : class
 	{
