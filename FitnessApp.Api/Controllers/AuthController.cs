@@ -55,20 +55,20 @@ namespace FitnessApp.Api.Controllers
 			if (!ModelState.IsValid)
 				return BadRequest(new { errors = ModelState });
 
-			// Find user by email
+			 
 			var user = await _userManager.FindByEmailAsync(model.Email);
 			if (user == null)
 				return Unauthorized(new { message = "Invalid credentials" });
 
-			// Check password
+			 
 			var isPasswordValid = await _userManager.CheckPasswordAsync(user, model.Password);
 			if (!isPasswordValid)
 				return Unauthorized(new { message = "Invalid credentials" });
 
-			// Get user roles
+			 
 			var userRoles = await _userManager.GetRolesAsync(user);
 
-			// Create claims for the token
+			 
 			var claims = new List<Claim>
 			{
 				new Claim(ClaimTypes.NameIdentifier, user.Id),
@@ -77,13 +77,13 @@ namespace FitnessApp.Api.Controllers
 				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
 			};
 
-			// Add role claims
+			 
 			foreach (var role in userRoles)
 			{
 				claims.Add(new Claim(ClaimTypes.Role, role));
 			}
 
-			// Create token
+			 
 			var token = GenerateJwtToken(claims);
 
 			return Ok(new
@@ -112,7 +112,7 @@ namespace FitnessApp.Api.Controllers
 			if (!result.Succeeded)
 				return BadRequest(new { errors = result.Errors });
 
-			// Assign default role
+			 
 			await _userManager.AddToRoleAsync(newUser, Roles.User);
 
 			return Ok(new
@@ -122,8 +122,7 @@ namespace FitnessApp.Api.Controllers
 			});
 		}
 
-		// No need for explicit logout with JWT - client simply discards the token
-		// But we can implement token blacklisting if needed
+		
 
 		[HttpPost("forgot-password")]
 		public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordModel model)
@@ -131,11 +130,10 @@ namespace FitnessApp.Api.Controllers
 			if (string.IsNullOrEmpty(model.Email))
 				return BadRequest(new { message = "Email is required" });
 
-			// Attempt to send a reset link regardless of whether the email exists
-			// This prevents email enumeration attacks
+		 
 			await _userService.InitiatePasswordResetAsync(model.Email);
 
-			// Always return success to maintain privacy
+		 
 			return Ok(new { message = "If your email exists in our system, you will receive a password reset link" });
 		}
 
@@ -173,7 +171,7 @@ namespace FitnessApp.Api.Controllers
 		}
 	}
 
-	// Models for API requests
+	 
 	public class AssignRoleModel
 	{
 		public string UserId { get; set; }
