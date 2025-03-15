@@ -20,6 +20,12 @@ namespace FitnessApp.DAL.Data
 		public DbSet<Exercise> Exercises { get; set; } = null!;
 		public DbSet<WorkoutExercise> WorkoutExercises { get; set; } = null!;
 		public DbSet<ApplicationUser> ApplicationUsers { get; set; } = null!;
+		public DbSet<CompletedWorkout> CompletedWorkouts { get; set; } = null!;
+		public DbSet<ExercisePerformance> ExercisePerformances { get; set; } = null!;
+		public DbSet<InBodyResult> InBodyResult { get; set; } = null!;
+		public DbSet<UserGoal> UserGoals { get; set; } = null!;
+		public DbSet<UserProgress> UserProgress { get; set; } = null!;
+
 
 
 
