@@ -14,14 +14,26 @@ namespace FitnessApp.DAL
 	{
 		private readonly AppDbContext _context;
 		private IUserRepository _userRepository;
+		private IWorkoutPlanRepository _workoutPlanRepository;
+		private IInBodyResultRepository _inBodyResultRepository;
+		private IExerciseRepository _exerciseRepository;
+
 
 		public UnitOfWork(AppDbContext context)
 		{
 			_context = context;
 			_userRepository = new UserRepository(_context);
+			_workoutPlanRepository = new WorkoutPlanRepository(_context);
+			_inBodyResultRepository = new InBodyResultRepository(_context);
+			_exerciseRepository = new ExerciseRepository(_context);
+
 		}
 
 		public IUserRepository UserRepository => _userRepository;
+		public IWorkoutPlanRepository WorkoutPlanRepository => _workoutPlanRepository;
+		public IInBodyResultRepository InBodyResultRepository => _inBodyResultRepository;
+		public IExerciseRepository ExerciseRepository => _exerciseRepository;
+
 
 		public async Task<int> SaveChangesAsync()
 		{

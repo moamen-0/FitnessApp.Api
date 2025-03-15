@@ -10,7 +10,11 @@ namespace FitnessApp.Core.Interfaces
 	public interface IUnitOfWork
 	{
 		IUserRepository UserRepository { get; }
-		
+		IWorkoutPlanRepository WorkoutPlanRepository { get; }
+		IInBodyResultRepository InBodyResultRepository { get; }
+		IExerciseRepository ExerciseRepository { get; }
+
+
 		Task<int> SaveChangesAsync();
 	}
 }
