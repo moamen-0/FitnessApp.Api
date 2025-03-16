@@ -13,6 +13,7 @@ namespace FitnessApp.Core.Interfaces
 		IWorkoutPlanRepository WorkoutPlanRepository { get; }
 		IInBodyResultRepository InBodyResultRepository { get; }
 		IExerciseRepository ExerciseRepository { get; }
+		IUserProgressRepository UserProgressRepository { get; }
 
 
 		Task<int> SaveChangesAsync();

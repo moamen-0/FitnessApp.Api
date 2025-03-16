@@ -40,7 +40,7 @@ namespace FitnessApp.Api.Controllers
 			if (user == null)
 				return NotFound(new { message = "User not found" });
 
-			// Remove sensitive information before returning
+			 
 			user.PasswordHash = null;
 			user.SecurityStamp = null;
 			user.ConcurrencyStamp = null;
@@ -116,8 +116,7 @@ namespace FitnessApp.Api.Controllers
 		public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetAllUsers()
 		{
 			var users = await _unitOfWork.UserRepository.GetAllUsersAsync();
-
-			// Remove sensitive information before returning
+ 
 			foreach (var user in users)
 			{
 				user.PasswordHash = null;
@@ -140,7 +139,7 @@ namespace FitnessApp.Api.Controllers
 			if (user == null)
 				return NotFound(new { message = "User not found" });
 
-			// Remove sensitive information before returning
+			 
 			user.PasswordHash = null;
 			user.SecurityStamp = null;
 			user.ConcurrencyStamp = null;

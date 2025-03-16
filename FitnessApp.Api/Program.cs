@@ -3,9 +3,11 @@
 using FitnessApp.BLL.Services;
 using FitnessApp.Core.Entities;
 using FitnessApp.Core.Interfaces;
+using FitnessApp.Core.Interfaces.IRepository;
 using FitnessApp.Core.Interfaces.IService;
 using FitnessApp.DAL;
 using FitnessApp.DAL.Data;
+using FitnessApp.DAL.Repositories;
 using FitnessApp.DAL.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -30,11 +32,19 @@ namespace FitnessApp.Api
 			builder.Services.AddSwaggerGen();
 			builder.Services.AddDbContext<AppDbContext>(options =>
 			options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+		
+			builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
+			builder.Services.AddScoped<IWorkoutPlanRepository, WorkoutPlanRepository>();
+			builder.Services.AddScoped<IUserRepository, UserRepository>();
+			builder.Services.AddScoped<IWorkoutPlanGenerationService, WorkoutPlanGenerationService>();
+			builder.Services.AddScoped<IInBodyResultRepository, InBodyResultRepository>();
+			builder.Services.AddScoped<IUserProgressService, UserProgressService>();
+			builder.Services.AddScoped<IUserProgressRepository, UserProgressRepository>();
 
-            builder.Services.AddAuthorization();
-            builder.Services.AddAuthorization();
 
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+
+
+			builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 				.AddJwtBearer(options =>
 				{
 					options.TokenValidationParameters = new TokenValidationParameters
@@ -46,7 +56,7 @@ namespace FitnessApp.Api
 						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]))
 					};
 				});
-
+  builder.Services.AddAuthorization();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 			builder.Services.AddScoped<IUserService, UserService>();
 			builder.Services.AddIdentity<ApplicationUser, IdentityRole>()

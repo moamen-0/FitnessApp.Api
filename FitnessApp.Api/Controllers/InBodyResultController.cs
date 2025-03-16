@@ -38,7 +38,7 @@ namespace FitnessApp.Api.Controllers
 
 			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-			// Ensure the user can only access their own InBody results
+			 
 			if (inBodyResult.UserId != userId)
 				return Forbid();
 
@@ -103,7 +103,7 @@ namespace FitnessApp.Api.Controllers
 		{
 			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-			// Default to last 30 days if no dates provided
+			 
 			var start = startDate ?? DateTime.UtcNow.AddDays(-30);
 			var end = endDate ?? DateTime.UtcNow;
 
@@ -134,10 +134,9 @@ namespace FitnessApp.Api.Controllers
 		{
 			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-			// Set the current user ID to ensure users can only add results for themselves
+			
 			inBodyResult.UserId = userId;
 
-			// Set the date to current UTC time if not provided
 			if (inBodyResult.Date == default)
 				inBodyResult.Date = DateTime.UtcNow;
 
@@ -159,11 +158,11 @@ namespace FitnessApp.Api.Controllers
 
 			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-			// Ensure the user can only update their own InBody results
+			
 			if (existingResult.UserId != userId)
 				return Forbid();
 
-			// Preserve the original user ID
+			
 			inBodyResult.UserId = existingResult.UserId;
 
 			await _inBodyResultRepository.UpdateInBodyResultAsync(inBodyResult);
@@ -181,7 +180,7 @@ namespace FitnessApp.Api.Controllers
 
 			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-			// Ensure the user can only delete their own InBody results
+			
 			if (inBodyResult.UserId != userId)
 				return Forbid();
 

@@ -44,7 +44,7 @@ namespace FitnessApp.Api.Controllers
 
 			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-			// Check if the user is authorized to view this workout plan
+			 
 			if (workoutPlan.UserId != userId && !User.IsInRole(Roles.Admin) && !workoutPlan.IsTemplate)
 				return Forbid();
 
@@ -111,12 +111,11 @@ namespace FitnessApp.Api.Controllers
 				return NotFound(new { message = "Workout plan not found" });
 
 			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-			// Check if the user is authorized to update this workout plan
+ 
 			if (existingPlan.UserId != userId && !User.IsInRole(Roles.Admin))
 				return Forbid();
 
-			// Preserve original user ID and creation date
+			 
 			workoutPlan.UserId = existingPlan.UserId;
 			workoutPlan.CreatedAt = existingPlan.CreatedAt;
 
@@ -135,11 +134,11 @@ namespace FitnessApp.Api.Controllers
 
 			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-			// Check if the user is authorized to delete this workout plan
+			 
 			if (workoutPlan.UserId != userId && !User.IsInRole(Roles.Admin))
 				return Forbid();
 
-			// Templates can only be deleted by admins
+			 
 			if (workoutPlan.IsTemplate && !User.IsInRole(Roles.Admin))
 				return Forbid();
 
@@ -166,7 +165,7 @@ namespace FitnessApp.Api.Controllers
 
 	public class WorkoutPlanGenerationRequest
 	{
-		public string Goal { get; set; } // Weight loss, Muscle gain, General fitness
-		public string FitnessLevel { get; set; } // Beginner, Intermediate, Advanced
+		public string Goal { get; set; }  
+		public string FitnessLevel { get; set; }  
 	}
 }

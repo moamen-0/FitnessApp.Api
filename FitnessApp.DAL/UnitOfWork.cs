@@ -17,6 +17,7 @@ namespace FitnessApp.DAL
 		private IWorkoutPlanRepository _workoutPlanRepository;
 		private IInBodyResultRepository _inBodyResultRepository;
 		private IExerciseRepository _exerciseRepository;
+		private IUserProgressRepository _userProgressRepository;
 
 
 		public UnitOfWork(AppDbContext context)
@@ -26,6 +27,7 @@ namespace FitnessApp.DAL
 			_workoutPlanRepository = new WorkoutPlanRepository(_context);
 			_inBodyResultRepository = new InBodyResultRepository(_context);
 			_exerciseRepository = new ExerciseRepository(_context);
+			_userProgressRepository = new UserProgressRepository(_context);
 
 		}
 
@@ -33,6 +35,7 @@ namespace FitnessApp.DAL
 		public IWorkoutPlanRepository WorkoutPlanRepository => _workoutPlanRepository;
 		public IInBodyResultRepository InBodyResultRepository => _inBodyResultRepository;
 		public IExerciseRepository ExerciseRepository => _exerciseRepository;
+		public IUserProgressRepository UserProgressRepository => _userProgressRepository;
 
 
 		public async Task<int> SaveChangesAsync()
