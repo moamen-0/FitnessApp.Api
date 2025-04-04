@@ -122,35 +122,39 @@ namespace FitnessApp.Api.Controllers
 			});
 		}
 
-		
 
+
+		[AllowAnonymous]
 		[HttpPost("forgot-password")]
-		public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordModel model)
-		{
-			if (string.IsNullOrEmpty(model.Email))
-				return BadRequest(new { message = "Email is required" });
-
-		 
-			await _userService.InitiatePasswordResetAsync(model.Email);
-
-		 
-			return Ok(new { message = "If your email exists in our system, you will receive a password reset link" });
-		}
-
-		[HttpPost("reset-password")]
-		public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto model)
+		public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto forgotPasswordDto)
 		{
 			if (!ModelState.IsValid)
 				return BadRequest(new { errors = ModelState });
 
-			if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Token))
-				return BadRequest(new { message = "Email and token are required" });
+			var result = await _userService.InitiatePasswordResetAsync(forgotPasswordDto.Email);
 
-			var result = await _userService.ResetPasswordAsync(model.Email, model.Token, model.NewPassword);
 			if (!result)
-				return BadRequest(new { message = "Invalid reset attempt. The token may have expired." });
+				return BadRequest(new { message = "Failed to initiate password reset. Please check the email provided." });
 
-			return Ok(new { message = "Password has been reset successfully" });
+			return Ok(new { message = "Password reset link has been sent to your email." });
+		}
+
+		[AllowAnonymous]
+		[HttpPost("reset-password")]
+		public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
+		{
+			if (!ModelState.IsValid)
+				return BadRequest(new { errors = ModelState });
+
+			var result = await _userService.ResetPasswordAsync(
+				resetPasswordDto.Email,
+				resetPasswordDto.Token,
+				resetPasswordDto.NewPassword);
+
+			if (!result)
+				return BadRequest(new { message = "Failed to reset password. Please check the token and try again." });
+
+			return Ok(new { message = "Password has been reset successfully." });
 		}
 
 		private JwtSecurityToken GenerateJwtToken(IEnumerable<Claim> claims)
@@ -178,9 +182,5 @@ namespace FitnessApp.Api.Controllers
 		public string RoleName { get; set; }
 	}
 
-	public class ForgotPasswordModel
-	{
-		public string Email { get; set; }
-	}
 }
 

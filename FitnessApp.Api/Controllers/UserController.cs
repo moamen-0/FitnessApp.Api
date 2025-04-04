@@ -167,39 +167,5 @@ namespace FitnessApp.Api.Controllers
 			return NoContent();
 		}
 
-		// POST: api/User/forgot-password
-		[AllowAnonymous]
-		[HttpPost("forgot-password")]
-		public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto forgotPasswordDto)
-		{
-			if (!ModelState.IsValid)
-				return BadRequest(new { errors = ModelState });
-
-			var result = await _userService.InitiatePasswordResetAsync(forgotPasswordDto.Email);
-
-			if (!result)
-				return BadRequest(new { message = "Failed to initiate password reset. Please check the email provided." });
-
-			return Ok(new { message = "Password reset link has been sent to your email." });
-		}
-
-		// POST: api/User/reset-password
-		[AllowAnonymous]
-		[HttpPost("reset-password")]
-		public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
-		{
-			if (!ModelState.IsValid)
-				return BadRequest(new { errors = ModelState });
-
-			var result = await _userService.ResetPasswordAsync(
-				resetPasswordDto.Email,
-				resetPasswordDto.Token,
-				resetPasswordDto.NewPassword);
-
-			if (!result)
-				return BadRequest(new { message = "Failed to reset password. Please check the token and try again." });
-
-			return Ok(new { message = "Password has been reset successfully." });
-		}
 	}
 }

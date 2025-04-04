@@ -14,5 +14,6 @@ namespace FitnessApp.Core.Interfaces.IService
 		Task<bool> ChangePasswordAsync(string userId, string currentPassword, string newPassword);
 		Task<bool> InitiatePasswordResetAsync(string email);
 		Task<bool> ResetPasswordAsync(string email, string token, string newPassword);
+
 	}
 }

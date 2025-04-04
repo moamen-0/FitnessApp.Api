@@ -2,6 +2,7 @@
 using FitnessApp.Core.Interfaces;
 using FitnessApp.Core.Interfaces.IService;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,13 +15,15 @@ namespace FitnessApp.BLL.Services
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly UserManager<ApplicationUser> _userManager;
-		private readonly IEmailService _emailService; // Assuming you have an email service
+		private readonly IEmailService _emailService; 
+		private readonly IConfiguration _configuration;
 
-		public UserService(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager, IEmailService emailService)
+		public UserService(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager, IEmailService emailService,IConfiguration configuration)
 		{
 			_unitOfWork = unitOfWork;
 			_userManager = userManager;
 			_emailService = emailService;
+			_configuration = configuration;
 		}
 
 		public async Task<bool> ChangePasswordAsync(string userId, string currentPassword, string newPassword)
@@ -42,15 +45,22 @@ namespace FitnessApp.BLL.Services
 			var user = await _userManager.FindByEmailAsync(email);
 			if (user == null) return false;
 
+			// Generate a token
 			var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-			var resetLink = $"https://yourapp.com/reset-password?email={email}&token={token}";
+
+			// Store the token and expiry in user record
+			user.ResetPasswordToken = token;
+			user.ResetPasswordTokenExpiry = DateTime.UtcNow.AddHours(24);
+			await _userManager.UpdateAsync(user);
+
+			// Create reset link (use absolute URL with the token)
+			var resetLink = $"{_configuration["ApplicationUrl"]}/Auth/ResetPassword?email={Uri.EscapeDataString(email)}&token={Uri.EscapeDataString(token)}";
 
 			// Send email
-			await _emailService.SendEmailAsync(email, "Password Reset", $"Please reset your password using the following link: {resetLink}");
+			await _emailService.SendPasswordResetEmailAsync(email, resetLink);
 
 			return true;
 		}
-
 		public async Task<bool> ResetPasswordAsync(string email, string token, string newPassword)
 		{
 			var user = await _userManager.FindByEmailAsync(email);
