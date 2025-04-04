@@ -40,6 +40,9 @@ namespace FitnessApp.Api
 			builder.Services.AddScoped<IInBodyResultRepository, InBodyResultRepository>();
 			builder.Services.AddScoped<IUserProgressService, UserProgressService>();
 			builder.Services.AddScoped<IUserProgressRepository, UserProgressRepository>();
+			builder.Services.AddScoped<IEmailService, EmailService>();
+			builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+			builder.Services.AddScoped<IUserService, UserService>();
 
 
 
