@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace FitnessApp.Core.Entities
@@ -14,6 +15,7 @@ namespace FitnessApp.Core.Entities
 		public int DayNumber { get; set; } // Day 1, Day 2, etc.
 
 		// Navigation properties
+		[JsonIgnore]
 		public virtual WorkoutPlan WorkoutPlan { get; set; }
 		public virtual ICollection<WorkoutExercise> Exercises { get; set; }
 	}

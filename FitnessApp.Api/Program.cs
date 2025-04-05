@@ -45,7 +45,12 @@ namespace FitnessApp.Api
 			builder.Services.AddScoped<IUserService, UserService>();
 
 
-
+			builder.Services.AddControllers()
+	.AddJsonOptions(options =>
+	{
+		options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+		options.JsonSerializerOptions.MaxDepth = 64; // Increase from the default 32 if needed
+	});
 
 			builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 				.AddJwtBearer(options =>
@@ -93,9 +98,10 @@ namespace FitnessApp.Api
 					logger.LogError(ex, "An error occurred while creating roles.");
 				}
 			}
+			app.UseStaticFiles();
 
-			
- app.MapOpenApi();
+
+			app.MapOpenApi();
 				app.UseSwagger();
 				app.UseSwaggerUI();
            
