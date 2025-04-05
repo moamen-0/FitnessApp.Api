@@ -31,7 +31,7 @@ namespace FitnessApp.Api.Controllers
 			_configuration = configuration;
 		}
 
-		[Authorize(Roles = Roles.Admin)]
+		//[Authorize(Roles = Roles.Admin)]
 		[HttpPost("assign-role")]
 		public async Task<IActionResult> AssignRole([FromBody] AssignRoleModel model)
 		{

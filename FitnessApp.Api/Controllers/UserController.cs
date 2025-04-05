@@ -30,7 +30,7 @@ namespace FitnessApp.Api.Controllers
 		}
 
 		// GET: api/User/profile
-		[Authorize]
+		//[Authorize]
 		[HttpGet("profile")]
 		public async Task<ActionResult<ApplicationUser>> GetUserProfile()
 		{
@@ -51,7 +51,7 @@ namespace FitnessApp.Api.Controllers
 		}
 
 		// PUT: api/User/profile
-		[Authorize]
+		//[Authorize]
 		[HttpPut("profile")]
 		public async Task<IActionResult> UpdateUserProfile(UserProfileUpdateDto profileUpdate)
 		{
@@ -91,7 +91,7 @@ namespace FitnessApp.Api.Controllers
 		}
 
 		// POST: api/User/change-password
-		[Authorize]
+		//[Authorize]
 		[HttpPost("change-password")]
 		public async Task<IActionResult> ChangePassword(ChangePasswordDto changePasswordDto)
 		{
@@ -111,7 +111,7 @@ namespace FitnessApp.Api.Controllers
 		}
 
 		// GET: api/User
-		[Authorize(Roles = Roles.Admin)]
+		//[Authorize(Roles = Roles.Admin)]
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetAllUsers()
 		{
@@ -130,7 +130,7 @@ namespace FitnessApp.Api.Controllers
 		}
 
 		// GET: api/User/{id}
-		[Authorize(Roles = Roles.Admin)]
+		//[Authorize(Roles = Roles.Admin)]
 		[HttpGet("{id}")]
 		public async Task<ActionResult<ApplicationUser>> GetUserById(string id)
 		{
@@ -150,7 +150,7 @@ namespace FitnessApp.Api.Controllers
 		}
 
 		// DELETE: api/User/{id}
-		[Authorize(Roles = Roles.Admin)]
+		//[Authorize(Roles = Roles.Admin)]
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteUser(string id)
 		{

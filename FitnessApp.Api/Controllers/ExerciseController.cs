@@ -1,4 +1,5 @@
-﻿using FitnessApp.Core.Entities;
+﻿using FitnessApp.Core.Dtos;
+using FitnessApp.Core.Entities;
 using FitnessApp.Core.Interfaces.IRepository;
 using FitnessApp.DAL.Utilities;
 using Microsoft.AspNetCore.Authorization;
@@ -98,32 +99,66 @@ namespace FitnessApp.Api.Controllers
 		}
 
 		// POST: api/Exercise
-		[Authorize(Roles = Roles.Admin)]
+		//[Authorize(Roles = Roles.Admin)]
 		[HttpPost]
-		public async Task<ActionResult<Exercise>> CreateExercise(Exercise exercise)
+		public async Task<IActionResult> CreateExercise(ExerciseDTO exerciseDTO)
 		{
+			if (!ModelState.IsValid)
+				return BadRequest(ModelState);
+
+			var exercise = new Exercise
+			{
+				Name = exerciseDTO.Name,
+				Description = exerciseDTO.Description,
+				Category = exerciseDTO.Category,
+				MuscleGroup = exerciseDTO.MuscleGroup,
+				Equipment = exerciseDTO.Equipment,
+				DifficultyLevel = exerciseDTO.DifficultyLevel,
+				InstructionSteps = exerciseDTO.InstructionSteps,
+				VideoUrl = exerciseDTO.VideoUrl,
+				ImageUrl = exerciseDTO.ImageUrl,
+				AIModelReference = exerciseDTO.AiModelReference
+			};
+
 			var createdExercise = await _exerciseRepository.CreateExerciseAsync(exercise);
 			return CreatedAtAction(nameof(GetExercise), new { id = createdExercise.Id }, createdExercise);
 		}
 
 		// PUT: api/Exercise/{id}
-		[Authorize(Roles = Roles.Admin)]
+		//[Authorize(Roles = Roles.Admin)]
 		[HttpPut("{id}")]
-		public async Task<IActionResult> UpdateExercise(int id, Exercise exercise)
+		public async Task<IActionResult> UpdateExercise(int id, ExerciseDTO exerciseDTO)
 		{
-			if (id != exercise.Id)
-				return BadRequest(new { message = "ID mismatch" });
+			if (exerciseDTO.Id.HasValue && id != exerciseDTO.Id.Value)
+				return BadRequest("ID in URL does not match ID in request body");
 
-			var exists = await _exerciseRepository.ExerciseExistsAsync(id);
-			if (!exists)
-				return NotFound(new { message = "Exercise not found" });
+			if (!ModelState.IsValid)
+				return BadRequest(ModelState);
 
-			await _exerciseRepository.UpdateExerciseAsync(exercise);
-			return NoContent();
+			var existingExercise = await _exerciseRepository.GetExerciseByIdAsync(id);
+			if (existingExercise == null)
+				return NotFound();
+
+			// Update the existing exercise's properties
+			existingExercise.Name = exerciseDTO.Name;
+			existingExercise.Description = exerciseDTO.Description;
+			existingExercise.Category = exerciseDTO.Category;
+			existingExercise.MuscleGroup = exerciseDTO.MuscleGroup;
+			existingExercise.Equipment = exerciseDTO.Equipment;
+			existingExercise.DifficultyLevel = exerciseDTO.DifficultyLevel;
+			existingExercise.InstructionSteps = exerciseDTO.InstructionSteps;
+			existingExercise.VideoUrl = exerciseDTO.VideoUrl;
+			existingExercise.ImageUrl = exerciseDTO.ImageUrl;
+			existingExercise.AIModelReference = exerciseDTO.AiModelReference;
+
+			var updatedExercise = await _exerciseRepository.UpdateExerciseAsync(existingExercise);
+
+			// Return the updated exercise
+			return Ok(updatedExercise);
 		}
 
 		// DELETE: api/Exercise/{id}
-		[Authorize(Roles = Roles.Admin)]
+		//[Authorize(Roles = Roles.Admin)]
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteExercise(int id)
 		{
@@ -136,7 +171,7 @@ namespace FitnessApp.Api.Controllers
 		}
 
 		// PUT: api/Exercise/{id}/aimodel
-		[Authorize(Roles = Roles.Admin)]
+		//[Authorize(Roles = Roles.Admin)]
 		[HttpPut("{id}/aimodel")]
 		public async Task<IActionResult> UpdateAIModelReference(int id, [FromBody] AIModelReferenceUpdate update)
 		{
