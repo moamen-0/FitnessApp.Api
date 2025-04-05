@@ -15,10 +15,10 @@ namespace FitnessApp.BLL.Services
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly UserManager<ApplicationUser> _userManager;
-		private readonly IEmailService _emailService; 
+		private readonly IEmailService _emailService;
 		private readonly IConfiguration _configuration;
 
-		public UserService(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager, IEmailService emailService,IConfiguration configuration)
+		public UserService(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager, IEmailService emailService, IConfiguration configuration)
 		{
 			_unitOfWork = unitOfWork;
 			_userManager = userManager;
@@ -66,16 +66,17 @@ namespace FitnessApp.BLL.Services
 			var user = await _userManager.FindByEmailAsync(email);
 			if (user == null) return false;
 
-			// Verify token hasn't expired
+			// Decode the token
+			token = Uri.UnescapeDataString(token);
+
+			
 			if (user.ResetPasswordTokenExpiry < DateTime.UtcNow)
 				return false;
 
-			// Reset the password
 			var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
 
 			if (result.Succeeded)
 			{
-				// Clear the token after successful reset
 				user.ResetPasswordToken = null;
 				user.ResetPasswordTokenExpiry = null;
 				await _userManager.UpdateAsync(user);
