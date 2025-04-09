@@ -8,7 +8,7 @@ namespace FitnessApp.Api.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	[Authorize]
+	//[Authorize]
 	public class InBodyResultController : ControllerBase
 	{
 		private readonly IInBodyResultRepository _inBodyResultRepository;

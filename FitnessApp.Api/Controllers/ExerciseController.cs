@@ -126,7 +126,7 @@ namespace FitnessApp.Api.Controllers
 
 		// PUT: api/Exercise/{id}
 		//[Authorize(Roles = Roles.Admin)]
-		[HttpPut("{id}")]
+		[HttpPost("update/{id}")]
 		public async Task<IActionResult> UpdateExercise(int id, ExerciseDTO exerciseDTO)
 		{
 			if (exerciseDTO.Id.HasValue && id != exerciseDTO.Id.Value)

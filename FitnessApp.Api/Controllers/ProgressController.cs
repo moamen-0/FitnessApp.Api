@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FitnessApp.Api.Controllers
 {
-	[Authorize]
+	//[Authorize]
 	[Route("api/[controller]")]
 	[ApiController]
 	public class ProgressController : ControllerBase

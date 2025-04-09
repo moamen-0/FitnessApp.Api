@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace FitnessApp.Api
 {
@@ -50,6 +51,10 @@ namespace FitnessApp.Api
 	{
 		options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
 		options.JsonSerializerOptions.MaxDepth = 64; // Increase from the default 32 if needed
+	});
+			builder.Services.AddControllers()
+	.AddJsonOptions(options => {
+		options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 	});
 
 			builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

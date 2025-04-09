@@ -90,7 +90,8 @@ namespace FitnessApp.Api.Controllers
 			{
 				
 				email = user.Email,
-				fullName = user.FullName
+				fullName = user.FullName,
+				token = new JwtSecurityTokenHandler().WriteToken(token),
 			});
 		}
 
@@ -121,7 +122,6 @@ namespace FitnessApp.Api.Controllers
 			
 			});
 		}
-
 
 
 		[AllowAnonymous]
