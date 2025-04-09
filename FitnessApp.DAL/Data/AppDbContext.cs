@@ -131,6 +131,23 @@ namespace FitnessApp.DAL.Data
 				.HasForeignKey(wp => wp.UserId)
 			
 				.OnDelete(DeleteBehavior.Restrict);
+
+			modelBuilder.Entity<ApplicationUser>()
+		.HasMany(u => u.FavoriteExercises)
+		.WithMany()
+		.UsingEntity<Dictionary<string, object>>(
+			"UserFavoriteExercises",
+			j => j.HasOne<Exercise>().WithMany().OnDelete(DeleteBehavior.Cascade),
+			j => j.HasOne<ApplicationUser>().WithMany().OnDelete(DeleteBehavior.Cascade));
+
+
+			modelBuilder.Entity<ApplicationUser>()
+				.HasMany(u => u.FavoriteMeals)
+				.WithMany()
+				.UsingEntity<Dictionary<string, object>>(
+					"UserFavoriteMeals",
+					j => j.HasOne<Meal>().WithMany().OnDelete(DeleteBehavior.Cascade),
+					j => j.HasOne<ApplicationUser>().WithMany().OnDelete(DeleteBehavior.Cascade));
 		}
 	}
 }

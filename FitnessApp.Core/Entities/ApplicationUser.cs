@@ -20,6 +20,10 @@ namespace FitnessApp.Core.Entities
 		public virtual UserGoal UserGoal { get; set; }
 		public virtual ICollection<UserProgress> ProgressEntries { get; set; }
 
+		
+		public virtual ICollection<Exercise> FavoriteExercises { get; set; } = new List<Exercise>();
+		public virtual ICollection<Meal> FavoriteMeals { get; set; } = new List<Meal>();
+
 		public string? ResetPasswordToken { get; set; }
 		public DateTime? ResetPasswordTokenExpiry { get; set; }
 	}
