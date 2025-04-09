@@ -44,7 +44,7 @@ namespace FitnessApp.Api
 			builder.Services.AddScoped<IEmailService, EmailService>();
 			builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 			builder.Services.AddScoped<IUserService, UserService>();
-
+			builder.Services.AddScoped<IFavoritesRepository, FavoritesRepository>();
 
 			builder.Services.AddControllers()
 	.AddJsonOptions(options =>

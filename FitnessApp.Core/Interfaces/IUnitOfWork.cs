@@ -14,7 +14,7 @@ namespace FitnessApp.Core.Interfaces
 		IInBodyResultRepository InBodyResultRepository { get; }
 		IExerciseRepository ExerciseRepository { get; }
 		IUserProgressRepository UserProgressRepository { get; }
-
+		IFavoritesRepository FavoritesRepository { get; }
 
 		Task<int> SaveChangesAsync();
 	}
