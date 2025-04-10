@@ -76,7 +76,14 @@ namespace FitnessApp.Api
 	.AddEntityFrameworkStores<AppDbContext>()
 	.AddDefaultTokenProviders();
 
-
+			builder.Services.AddCors(options =>
+			{
+				options.AddPolicy("AllowFlutterApp",
+					policy => policy
+						.AllowAnyOrigin() // Consider restricting to specific origins in production
+						.AllowAnyMethod()
+						.AllowAnyHeader());
+			});
 
 
 			var app = builder.Build();
@@ -115,8 +122,8 @@ namespace FitnessApp.Api
 
 			app.UseAuthorization();
 
-
-            app.MapControllers();
+			app.UseCors("AllowFlutterApp");
+			app.MapControllers();
 
             app.Run();
         }
