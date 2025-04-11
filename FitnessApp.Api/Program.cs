@@ -46,6 +46,8 @@ namespace FitnessApp.Api
 			builder.Services.AddScoped<IUserService, UserService>();
 			builder.Services.AddScoped<IFavoritesRepository, FavoritesRepository>();
 			builder.Services.AddScoped<IMealService, MealService>();
+			builder.Services.AddScoped<IDietPlanService, DietPlanService>();
+
 
 			builder.Services.AddControllers()
 	.AddJsonOptions(options =>
