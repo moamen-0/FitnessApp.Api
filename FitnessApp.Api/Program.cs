@@ -114,7 +114,16 @@ namespace FitnessApp.Api
 						.AllowAnyHeader());
 			});
 
-
+			builder.Services.Configure<IdentityOptions>(options =>
+			{
+				// Password settings
+				options.Password.RequireDigit = false;
+				options.Password.RequireLowercase = false;
+				options.Password.RequireNonAlphanumeric = false;
+				options.Password.RequireUppercase = false;
+				options.Password.RequiredLength = 1; // Minimum length (set to whatever minimum you want)
+				options.Password.RequiredUniqueChars = 0;
+			});
 			var app = builder.Build();
 			using (var scope = app.Services.CreateScope())
 			{
