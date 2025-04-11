@@ -45,6 +45,7 @@ namespace FitnessApp.Api
 			builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 			builder.Services.AddScoped<IUserService, UserService>();
 			builder.Services.AddScoped<IFavoritesRepository, FavoritesRepository>();
+			builder.Services.AddScoped<IMealService, MealService>();
 
 			builder.Services.AddControllers()
 	.AddJsonOptions(options =>
@@ -120,11 +121,10 @@ namespace FitnessApp.Api
 			app.MapOpenApi();
 				app.UseSwagger();
 				app.UseSwaggerUI();
-           
-			app.UseAuthentication();
-
-
+			app.UseHttpsRedirection();
+			app.UseAuthentication(); 
 			app.UseAuthorization();
+		
 
 			app.UseCors("AllowFlutterApp");
 			app.MapControllers();

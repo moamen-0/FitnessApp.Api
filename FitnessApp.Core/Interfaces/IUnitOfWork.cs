@@ -1,4 +1,5 @@
 ﻿using FitnessApp.Core.Interfaces.IRepository;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace FitnessApp.Core.Interfaces
 		IExerciseRepository ExerciseRepository { get; }
 		IUserProgressRepository UserProgressRepository { get; }
 		IFavoritesRepository FavoritesRepository { get; }
-
+		DbContext DbContext { get; }
 		Task<int> SaveChangesAsync();
 	}
 }

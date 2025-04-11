@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitnessApp.DAL
 {
@@ -38,7 +39,7 @@ namespace FitnessApp.DAL
 		public IUserProgressRepository UserProgressRepository => _userProgressRepository;
 		public IFavoritesRepository FavoritesRepository => _favoritesRepository;
 
-
+		public DbContext DbContext => _context;
 		public async Task<int> SaveChangesAsync()
 		{
 			return await _context.SaveChangesAsync();
