@@ -21,6 +21,7 @@ namespace FitnessApp.Core.Entities
 		public int? DailyProteinTarget { get; set; } // in grams
 		public int? DailyCarbsTarget { get; set; } // in grams
 		public int? DailyFatTarget { get; set; } // in grams
+		public string? ImageUrl { get; set; } // URL to diet plan image
 
 		// Duration
 		public int DurationDays { get; set; }

@@ -67,7 +67,7 @@ namespace FitnessApp.Api.Controllers
 
 		// PUT: api/User/profile
 		//[Authorize]
-		[HttpPut("profile")]
+		[HttpPost("update/profile")]
 		public async Task<IActionResult> UpdateUserProfile(UserProfileUpdateDto profileUpdate)
 		{
 			if (!ModelState.IsValid)
@@ -128,22 +128,24 @@ namespace FitnessApp.Api.Controllers
 		// GET: api/User
 		//[Authorize(Roles = Roles.Admin)]
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetAllUsers()
+		public async Task<ActionResult<IEnumerable<UserProfileResponseDto>>> GetAllUsers()
 		{
 			var users = await _unitOfWork.UserRepository.GetAllUsersAsync();
- 
-			foreach (var user in users)
+
+			var userDtos = users.Select(user => new UserProfileResponseDto
 			{
-				user.PasswordHash = null;
-				user.SecurityStamp = null;
-				user.ConcurrencyStamp = null;
-				user.ResetPasswordToken = null;
-				user.ResetPasswordTokenExpiry = null;
-			}
+				Id = user.Id,
+				Email = user.Email,
+				FullName = user.FullName,
+				Gender = user.Gender,
+				DateOfBirth = user.DateOfBirth,
+				ProfileImage = user.ProfileImage,
+				Age = user.Age,
+				CreatedAt = user.CreatedAt
+			}).ToList();
 
-			return Ok(users);
+			return Ok(userDtos);
 		}
-
 		// GET: api/User/{id}
 		//[Authorize(Roles = Roles.Admin)]
 		[HttpGet("{id}")]
@@ -161,7 +163,19 @@ namespace FitnessApp.Api.Controllers
 			user.ResetPasswordToken = null;
 			user.ResetPasswordTokenExpiry = null;
 
-			return Ok(user);
+			var userProfileDto = new UserProfileResponseDto
+			{
+				Id = user.Id,
+				Email = user.Email,
+				FullName = user.FullName,
+				Gender = user.Gender,
+				DateOfBirth = user.DateOfBirth,
+				ProfileImage = user.ProfileImage,
+				Age = user.Age,
+				CreatedAt = user.CreatedAt
+			};
+
+			return Ok(userProfileDto);
 		}
 
 		// DELETE: api/User/{id}

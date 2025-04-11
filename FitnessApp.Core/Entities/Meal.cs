@@ -16,6 +16,7 @@
 		public decimal Protein { get; set; } // in grams
 		public decimal Carbs { get; set; } // in grams
 		public decimal Fat { get; set; } // in grams
+		public string? ImageUrl { get; set; } // URL to meal image
 
 		// Navigation property
 		public virtual DietPlan DietPlan { get; set; }

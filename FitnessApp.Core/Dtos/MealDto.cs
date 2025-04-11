@@ -40,5 +40,7 @@ namespace FitnessApp.Core.Dtos
 		[Required]
 		[Range(0, double.MaxValue)]
 		public decimal Fat { get; set; }
+
+		public string? ImageUrl { get; set; }
 	}
 }

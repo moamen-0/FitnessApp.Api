@@ -54,7 +54,21 @@ namespace FitnessApp.Api.Controllers
 		public async Task<ActionResult<IEnumerable<Meal>>> GetMealsByType(string mealType)
 		{
 			var meals = await _mealService.GetMealsByTypeAsync(mealType);
-			return Ok(meals);
+			var mealDtos = meals.Select(m => new MealDto
+			{
+				Id = m.Id,
+				DietPlanId = m.DietPlanId,
+				MealType = m.MealType,
+				Name = m.Name,
+				Description = m.Description,
+				FoodItems = m.FoodItems,
+				Calories = m.Calories,
+				Protein = m.Protein,
+				Carbs = m.Carbs,
+				Fat = m.Fat,
+				ImageUrl = m.ImageUrl
+			}).ToList();
+			return Ok(mealDtos);
 		}
 
 		// GET: api/Meal/search
