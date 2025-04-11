@@ -49,7 +49,20 @@ namespace FitnessApp.Api.Controllers
 			user.ResetPasswordToken = null;
 			user.ResetPasswordTokenExpiry = null;
 
-			return Ok(user);
+
+			var userProfileDto = new UserProfileResponseDto
+			{
+				Id = user.Id,
+				Email = user.Email,
+				FullName = user.FullName,
+				Gender = user.Gender,
+				DateOfBirth = user.DateOfBirth,
+				ProfileImage = user.ProfileImage,
+				Age = user.Age,
+				CreatedAt = user.CreatedAt
+			};
+
+			return Ok(userProfileDto);
 		}
 
 		// PUT: api/User/profile

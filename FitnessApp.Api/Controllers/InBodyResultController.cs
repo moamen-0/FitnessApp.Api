@@ -1,4 +1,5 @@
-﻿using FitnessApp.Core.Entities;
+﻿using FitnessApp.Core.Dtos;
+using FitnessApp.Core.Entities;
 using FitnessApp.Core.Interfaces.IRepository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -131,15 +132,23 @@ namespace FitnessApp.Api.Controllers
 
 		// POST: api/InBodyResult
 		[HttpPost]
-		public async Task<ActionResult<InBodyResult>> CreateInBodyResult(InBodyResult inBodyResult)
+		public async Task<ActionResult<InBodyResult>> CreateInBodyResult(CreateInBodyResultDto dto)
 		{
 			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-			
-			inBodyResult.UserId = userId;
-
-			if (inBodyResult.Date == default)
-				inBodyResult.Date = DateTime.UtcNow;
+			// Map from DTO to entity
+			var inBodyResult = new InBodyResult
+			{
+				UserId = userId,
+				Date = dto.Date ?? DateTime.UtcNow,
+				Weight = dto.Weight,
+				BodyFatPercentage = dto.BodyFatPercentage,
+				MuscleMass = dto.MuscleMass,
+				BMI = dto.BMI,
+				VisceralFat = dto.VisceralFat,
+				BMR = dto.BMR,
+				ActivityLevel = dto.ActivityLevel
+			};
 
 			var createdResult = await _inBodyResultRepository.CreateInBodyResultAsync(inBodyResult);
 			return CreatedAtAction(nameof(GetInBodyResult), new { id = createdResult.Id }, createdResult);

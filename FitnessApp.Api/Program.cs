@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -124,6 +125,36 @@ namespace FitnessApp.Api
 				options.Password.RequiredLength = 1; // Minimum length (set to whatever minimum you want)
 				options.Password.RequiredUniqueChars = 0;
 			});
+			builder.Services.AddSwaggerGen(options =>
+			{
+				
+				options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+				{
+					Name = "Authorization",
+					Type = SecuritySchemeType.Http,
+					Scheme = "Bearer",
+					BearerFormat = "JWT",
+					In = ParameterLocation.Header,
+					Description = "Bearer {your token here}"
+				});
+
+				
+				options.AddSecurityRequirement(new OpenApiSecurityRequirement
+	{
+		{
+			new OpenApiSecurityScheme
+			{
+				Reference = new OpenApiReference
+				{
+					Type = ReferenceType.SecurityScheme,
+					Id = "Bearer"
+				}
+			},
+			new string[] {}
+		}
+	});
+			});
+
 			var app = builder.Build();
 			using (var scope = app.Services.CreateScope())
 			{
