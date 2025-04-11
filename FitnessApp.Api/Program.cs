@@ -60,19 +60,45 @@ namespace FitnessApp.Api
 		options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 	});
 
-			builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-				.AddJwtBearer(options =>
-				{
-					options.TokenValidationParameters = new TokenValidationParameters
-					{
-						ValidateIssuer = false,
-						ValidateAudience = false,
-						ValidateLifetime = true,
-						ValidateIssuerSigningKey = true,
-						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]))
-					};
-				});
-  builder.Services.AddAuthorization();
+			builder.Services.AddAuthentication(options =>
+			{
+				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+				options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+			})
+.AddJwtBearer(options =>
+{
+	options.TokenValidationParameters = new TokenValidationParameters
+	{
+		ValidateIssuer = false,
+		ValidateAudience = false,
+		ValidateLifetime = true,
+		ValidateIssuerSigningKey = true,
+		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"])),
+		ClockSkew = TimeSpan.Zero // Reduces the default 5-minute leeway
+	};
+
+	options.Events = new JwtBearerEvents
+	{
+		OnAuthenticationFailed = context =>
+		{
+			Console.WriteLine($"Authentication failed: {context.Exception.Message}");
+			return Task.CompletedTask;
+		},
+		OnTokenValidated = context =>
+		{
+			Console.WriteLine("Token validated successfully");
+			return Task.CompletedTask;
+		},
+		OnMessageReceived = context =>
+		{
+			var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+			Console.WriteLine($"Token received: {token?.Substring(0, 20)}...");
+			return Task.CompletedTask;
+		}
+	};
+});
+			builder.Services.AddAuthorization();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 			builder.Services.AddScoped<IUserService, UserService>();
 			builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -90,11 +116,11 @@ namespace FitnessApp.Api
 
 
 			var app = builder.Build();
-			using (var scope = app.Services.CreateScope())
-			{
-				var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-				dbContext.Database.Migrate();
-			}
+			//using (var scope = app.Services.CreateScope())
+			//{
+			//	var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+			//	dbContext.Database.Migrate();
+			//}
 			using (var scope = app.Services.CreateScope())
 			{
 				var services = scope.ServiceProvider;
@@ -124,11 +150,11 @@ namespace FitnessApp.Api
 				app.UseSwagger();
 				app.UseSwaggerUI();
 			app.UseHttpsRedirection();
+			app.UseCors("AllowFlutterApp");
 			app.UseAuthentication(); 
 			app.UseAuthorization();
 		
 
-			app.UseCors("AllowFlutterApp");
 			app.MapControllers();
 
             app.Run();

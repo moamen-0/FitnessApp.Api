@@ -2,6 +2,7 @@
 using FitnessApp.Core.Entities;
 using FitnessApp.Core.Interfaces.IRepository;
 using FitnessApp.DAL.Utilities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -10,6 +11,7 @@ namespace FitnessApp.Api.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 	public class ExerciseController : ControllerBase
 	{
 		private readonly IExerciseRepository _exerciseRepository;

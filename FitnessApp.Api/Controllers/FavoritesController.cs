@@ -1,5 +1,7 @@
 ﻿using FitnessApp.Core.Entities;
 using FitnessApp.Core.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -8,6 +10,7 @@ namespace FitnessApp.Api.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 	public class FavoritesController : ControllerBase
 	{
 		private readonly IUnitOfWork _unitOfWork;
@@ -22,6 +25,11 @@ namespace FitnessApp.Api.Controllers
 		public async Task<ActionResult<IEnumerable<Exercise>>> GetFavoriteExercises()
 		{
 			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			if (string.IsNullOrEmpty(userId))
+			{
+				return Unauthorized(new { message = "User not authenticated" });
+			}
+
 			var favorites = await _unitOfWork.FavoritesRepository.GetFavoriteExercisesAsync(userId);
 			return Ok(favorites);
 		}

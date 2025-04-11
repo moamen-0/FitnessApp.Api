@@ -1,6 +1,7 @@
 ﻿ 
 using FitnessApp.Core.Entities;
 using FitnessApp.Core.Interfaces.IService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,6 +14,7 @@ namespace FitnessApp.Api.Controllers
 	//[Authorize]
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 	public class ProgressController : ControllerBase
 	{
 		private readonly IUserProgressService _progressService;

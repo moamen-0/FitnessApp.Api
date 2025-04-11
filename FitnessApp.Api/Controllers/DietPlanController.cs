@@ -1,6 +1,7 @@
 ﻿using FitnessApp.Core.Dtos;
 using FitnessApp.Core.Entities;
 using FitnessApp.Core.Interfaces.IService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,7 @@ namespace FitnessApp.Api.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	//[Authorize]
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 	public class DietPlanController : ControllerBase
 	{
 		private readonly IDietPlanService _dietPlanService;
