@@ -79,11 +79,29 @@ namespace FitnessApp.DAL.Repositories
 				return latestResult.BMI.Value;
 			}
 
-			// If BMI doesn't exist in the latest result, we could calculate it
-			// However, we would need the user's height, which isn't stored in InBodyResult
-			// This might require fetching from user profile or another source
-			return 0;
+			// Fetch the user's height from the ApplicationUser entity
+			var user = await _context.Users
+				.Where(u => u.Id == userId)
+				.Select(u => new { u.Height }) // Assuming Height is stored in meters
+				.FirstOrDefaultAsync();
+
+			if (user == null || user.Height == null || user.Height <= 0)
+			{
+				// If height is not available, return 0
+				return 0;
+			}
+
+			// Calculate BMI using the formula: BMI = Weight / (Height * Height)
+			var height = user.Height.Value; // Height in meters
+			var bmi = latestResult.Weight / (height * height);
+
+			// Update the BMI in the latest InBodyResult and save changes
+			latestResult.BMI = bmi;
+			await _context.SaveChangesAsync();
+
+			return bmi;
 		}
+
 
 		public async Task<Dictionary<string, List<decimal>>> GetBodyCompositionTrendsAsync(string userId, DateTime startDate, DateTime endDate)
 		{

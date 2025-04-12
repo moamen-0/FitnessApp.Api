@@ -11,6 +11,7 @@ namespace FitnessApp.Core.Entities
 		public DateTime DateOfBirth { get; set; }
 		public string? ProfileImage { get; set; }
 		public int? Age { get; set; }
+		public int? Height { get; set; }
 		public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
 
