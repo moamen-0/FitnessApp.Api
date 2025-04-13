@@ -59,7 +59,8 @@ namespace FitnessApp.Api.Controllers
 				DateOfBirth = user.DateOfBirth,
 				ProfileImage = user.ProfileImage,
 				Age = user.Age,
-				CreatedAt = user.CreatedAt
+				CreatedAt = user.CreatedAt,
+				PhoneNumber = user.PhoneNumber
 			};
 
 			return Ok(userProfileDto);

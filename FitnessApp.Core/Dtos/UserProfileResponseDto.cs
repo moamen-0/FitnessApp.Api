@@ -16,5 +16,6 @@ namespace FitnessApp.Core.Dtos
 		public string? ProfileImage { get; set; }
 		public int? Age { get; set; }
 		public DateTime? CreatedAt { get; set; }
+		public string? PhoneNumber { get; set; }
 	}
 }
