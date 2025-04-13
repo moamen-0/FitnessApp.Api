@@ -106,7 +106,8 @@ namespace FitnessApp.Api.Controllers
 			{
 				FullName = model.FullName,
 				Email = model.Email,
-				UserName = model.Email
+				UserName = model.Email,
+				PhoneNumber = model.phoneNumber
 			};
 
 			var result = await _userManager.CreateAsync(newUser, model.Password);
