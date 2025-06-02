@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using FitnessApp.Core.Dtos;
+using FitnessApp.Core.Extensions;
 
 namespace FitnessApp.Api.Controllers
 {	[Route("api/[controller]")]
@@ -73,7 +75,7 @@ namespace FitnessApp.Api.Controllers
 		// POST: api/WorkoutPlan/generate
 		[HttpPost("generate")]
 		[AllowAnonymous]
-		public async Task<ActionResult<WorkoutPlan>> GenerateWorkoutPlan([FromBody] WorkoutPlanGenerationRequest request)
+		public async Task<ActionResult<WorkoutPlanDto>> GenerateWorkoutPlan([FromBody] WorkoutPlanGenerationRequest request)
 		{
 			if (string.IsNullOrEmpty(request.Goal) || string.IsNullOrEmpty(request.FitnessLevel))
 				return BadRequest(new { message = "Goal and fitness level are required" });
@@ -83,7 +85,7 @@ namespace FitnessApp.Api.Controllers
 			var generatedPlan = await _workoutPlanGenerationService.GenerateCustomWorkoutPlanAsync(
 				userId, request.Goal, request.FitnessLevel);
 
-			return CreatedAtAction(nameof(GetWorkoutPlan), new { id = generatedPlan.Id }, generatedPlan);
+			return CreatedAtAction(nameof(GetWorkoutPlan), new { id = generatedPlan.Id }, generatedPlan.ToDto());
 		}
 
 		// POST: api/WorkoutPlan/clone/{templateId}
