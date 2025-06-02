@@ -9,7 +9,7 @@ namespace FitnessApp.Core.Interfaces.IService
 {
 	public interface IWorkoutPlanGenerationService
 	{
-		Task<WorkoutPlan> GenerateCustomWorkoutPlanAsync(string userId, string goal, string fitnessLevel);
+		Task<WorkoutPlan> GenerateCustomWorkoutPlanAsync(string? userId, string goal, string fitnessLevel);
 
 	}
 }

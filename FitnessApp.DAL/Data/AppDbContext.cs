@@ -122,14 +122,12 @@ namespace FitnessApp.DAL.Data
 			modelBuilder.Entity<WorkoutExercise>()
 				.HasOne(we => we.WorkoutDay)
 				.WithMany(wd => wd.Exercises)
-				.HasForeignKey(we => we.WorkoutDayId);
-
-			// WorkoutPlan relationships
+				.HasForeignKey(we => we.WorkoutDayId);			// WorkoutPlan relationships
 			modelBuilder.Entity<WorkoutPlan>()
 				.HasOne(wp => wp.User)
 				.WithMany(u => u.WorkoutPlans)
 				.HasForeignKey(wp => wp.UserId)
-			
+				.IsRequired(false) // Allow null UserId for anonymous plans
 				.OnDelete(DeleteBehavior.Restrict);
 
 			modelBuilder.Entity<ApplicationUser>()

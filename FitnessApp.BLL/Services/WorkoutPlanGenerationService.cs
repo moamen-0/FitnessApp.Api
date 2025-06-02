@@ -24,7 +24,7 @@ namespace FitnessApp.BLL.Services
 			_inBodyResultRepository = inBodyResultRepository;
 		}
 
-		public async Task<WorkoutPlan> GenerateCustomWorkoutPlanAsync(string userId, string goal, string fitnessLevel)
+		public async Task<WorkoutPlan> GenerateCustomWorkoutPlanAsync(string? userId, string goal, string fitnessLevel)
 		{
 			// Get the user's latest InBody results
 			var latestInBodyResult = await _inBodyResultRepository.GetLatestInBodyResultAsync(userId);

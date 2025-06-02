@@ -8,8 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace FitnessApp.Api.Controllers
-{
-	[Route("api/[controller]")]
+{	[Route("api/[controller]")]
 	[ApiController]
 	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 	public class WorkoutPlanController : ControllerBase
@@ -68,18 +67,19 @@ namespace FitnessApp.Api.Controllers
 			workoutPlan.UserId = userId;
 			workoutPlan.CreatedAt = DateTime.UtcNow;
 
-			var createdPlan = await _workoutPlanRepository.CreateWorkoutPlanAsync(workoutPlan);
-			return CreatedAtAction(nameof(GetWorkoutPlan), new { id = createdPlan.Id }, createdPlan);
+			var createdPlan = await _workoutPlanRepository.CreateWorkoutPlanAsync(workoutPlan);			return CreatedAtAction(nameof(GetWorkoutPlan), new { id = createdPlan.Id }, createdPlan);
 		}
 
 		// POST: api/WorkoutPlan/generate
 		[HttpPost("generate")]
+		[AllowAnonymous]
 		public async Task<ActionResult<WorkoutPlan>> GenerateWorkoutPlan([FromBody] WorkoutPlanGenerationRequest request)
 		{
 			if (string.IsNullOrEmpty(request.Goal) || string.IsNullOrEmpty(request.FitnessLevel))
 				return BadRequest(new { message = "Goal and fitness level are required" });
 
-			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			// Get userId if user is authenticated, otherwise use null for anonymous generation
+			var userId = User?.Identity?.IsAuthenticated == true ? User.FindFirstValue(ClaimTypes.NameIdentifier) : null;
 			var generatedPlan = await _workoutPlanGenerationService.GenerateCustomWorkoutPlanAsync(
 				userId, request.Goal, request.FitnessLevel);
 
@@ -163,10 +163,9 @@ namespace FitnessApp.Api.Controllers
 			return Ok(workoutPlans);
 		}
 	}
-
 	public class WorkoutPlanGenerationRequest
 	{
-		public string Goal { get; set; }  
-		public string FitnessLevel { get; set; }  
+		public required string Goal { get; set; }  
+		public required string FitnessLevel { get; set; }  
 	}
 }
